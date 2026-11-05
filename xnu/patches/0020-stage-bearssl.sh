@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 # Pinned, portable constant-time AES for the SWEET legacy CBC/ECB API.
 set -euo pipefail
 [[ "${MACHINE_CONFIG:-}" == SWEET ]] || exit 0
@@ -8,7 +8,7 @@ bearssl_tmp=$(mktemp -d)
 trap 'rm -rf "$bearssl_tmp"' EXIT
 git init -q "$bearssl_tmp"
 git -C "$bearssl_tmp" fetch -q --depth 1 \
-    https://www.bearssl.org/git/BearSSL "$bearssl_sha"
+    https://github.com/status-im/BearSSL "$bearssl_sha"
 git -C "$bearssl_tmp" checkout -q FETCH_HEAD
 [[ "$(git -C "$bearssl_tmp" rev-parse HEAD)" == "$bearssl_sha" ]]
 python3 - "$bearssl_tmp" <<'PY'
