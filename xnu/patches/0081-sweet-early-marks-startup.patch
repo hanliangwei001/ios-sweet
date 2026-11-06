@@ -1,0 +1,54 @@
+--- a/osfmk/kern/startup.c
++++ b/osfmk/kern/startup.c
+@@ -91,6 +91,7 @@
+ #include <kern/sfi.h>
+ #endif
+ #include <kern/startup.h>
++#include <arm64/sweet_early.h>
+ #include <kern/task.h>
+ #include <kern/thread.h>
+ #include <kern/timer.h>
+@@ -707,7 +708,9 @@
+ 	 * This will start displaying progress to the user, start as early as possible
+ 	 */
+ 	printf("BSD DBG: before initialize_screen\n");
++	sweet_early_mark(21, "before init_screen");
+ 	initialize_screen(NULL, kPEAcquireScreen);
++	sweet_early_mark(22, "after init_screen");
+ 	printf("BSD DBG: after initialize_screen\n");
+ 
+ 	/*
+@@ -747,6 +750,7 @@
+ #endif
+ 
+ 	kernel_startup_initialize_upto(STARTUP_SUB_LOCKDOWN);
++	sweet_early_mark(23, "upto lockdown done");
+ 	printf("BSD DBG: startup upto lockdown done\n");
+ 
+ 	/*
+@@ -791,6 +795,7 @@
+ 	 */
+ #ifdef  MACH_BSD
+ 	printf("BSD DBG: calling bsd_init\n");
++	sweet_early_mark(24, "calling bsd_init");
+ 	bsd_init();
+ 	printf("BSD DBG: bsd_init returned\n");
+ #endif
+--- a/bsd/kern/bsd_init.c
++++ b/bsd/kern/bsd_init.c
+@@ -80,6 +80,7 @@
+  */
+ 
+ #include <sys/param.h>
++#include <arm64/sweet_early.h>
+ #include <sys/filedesc.h>
+ #include <sys/kernel.h>
+ #include <sys/mount_internal.h>
+@@ -476,6 +477,7 @@
+ void
+ bsd_init(void)
+ {
++	sweet_early_mark(26, "bsd_init enter");
+ 	printf("BSD DBG: bsd_init enter\n");
+ 	struct uthread *ut;
+ 	vnode_t init_rootvnode = NULLVP;
